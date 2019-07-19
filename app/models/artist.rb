@@ -16,26 +16,26 @@ class Artist
   end
 
   def paintings
-    Painting.all.select do |painting|
-      painting.artist == self
-    end
+    Painting.all.select { |painting|  painting.artist == self }
+     end
+
   end
 
   def galleries
-    paintings.map do |painting|
-      painting.gallery
+    paintings.map  { |painting|  painting.gallery }
+   
     end
   end
 
   def cities
-    galleries.map do |gallery|
-      gallery.city
+    galleries.map  { |gallery|   gallery.city }
+    
     end
   end
 
   def self.total_experience
-    self.all.reduce(0) do |sum, artist|
-      sum + artist.years_experience
+    artists_years_experience = Artist.all.map { |artist| artist.years_experience}
+    artists_years_experience.reduce { |total, years_experience| total + years_experience}
     end
   end
 
