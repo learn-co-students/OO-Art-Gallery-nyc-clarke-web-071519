@@ -2,41 +2,39 @@ class Gallery
 
   attr_reader :name, :city
 
+  @@all = []
+
   def initialize(name, city)
     @name = name
     @city = city
+    @@all << self
   end
+
+  def self.all
+    @@all
+  end
+
   def paintings
     Painting.all.select do |painting|
-      painting.artist == self
+      painting.gallery == self
     end
   end
 
-  def galleries
+  def artists
     paintings.map do |painting|
-      painting.gallery
+      painting.artist
     end
   end
 
-  def cities
-    galleries.map do |gallery|
-      gallery.city
+  def artist_names
+    artists.map do |artist|
+      artist.name
     end
   end
 
-  def self.total_experience
-    self.all.reduce(0) do |sum, artist|
-      sum + artist.years_experience
+  def most_expensive_painting
+    paintings.max_by do |painting|
+      painting.price
     end
-  end
-
-  def self.most_prolific
-    self.all.max_by do |artist|
-      artist.paintings.length / artist.years_experience
-    end
-  end
-
-  def create_painting(title, price, gallery)
-    Painting.new(title, price, self, gallery)
   end
 end
